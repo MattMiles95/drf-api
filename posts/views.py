@@ -14,10 +14,15 @@ class PostList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Post.objects.annotate(
         comments_count=Count('comment', distinct=True),
-        likes_count=Count('like', distinct=True)
+        likes_count=Count('likes', distinct=True)
     ).order_by('-created_at')
     filter_backends = [
-        filters.OrderingFilter
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
+    search_fields = [
+        'owner__username',
+        'title',
     ]
     ordering_fields = [
         'comments_count',
@@ -37,5 +42,5 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Post.objects.annotate(
         comments_count=Count('comment', distinct=True),
-        likes_count=Count('like', distinct=True)
+        likes_count=Count('likes', distinct=True)
     ).order_by('-created_at')
