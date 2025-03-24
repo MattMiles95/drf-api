@@ -15,9 +15,6 @@ import os
 import re
 import dj_database_url
 import cloudinary
-import django_heroku
-
-django_heroku.settings(locals())
 
 if os.path.exists('env.py'):
     import env
